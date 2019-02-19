@@ -21,14 +21,14 @@ class Streamer(StreamListener):
             print(status.text)
             return status.text
         elif self.counter > self.limit:
-            print("Limit of " + str(self.limit) + " met.")
+            print("***Limit of " + str(self.limit) + " met 😀.***")
             streaming.disconnect()
 
 
 n = 500
 
 streaming = tweepy.Stream(auth=setup.api.auth, listener=Streamer())
-streaming.filter(track=["Bernie"])
+tweet_data = streaming.filter(track=["Bernie"])
 
 
 

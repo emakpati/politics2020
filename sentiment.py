@@ -5,9 +5,13 @@ import stream
 import textblob
 import numpy as np
 
-stream_arr = stream.
-def get_polarity(arr):
+stream_arr = stream.tweet_data
+
+# Maybe have one func that returns a tuple and then unpack it later
+
+def get_polarity(arr_of_tweets):
     # return list of polarity scores
+    pol_list = []
 
 
 def get_avg_polarity(polarity_arr):
@@ -16,8 +20,9 @@ def get_avg_polarity(polarity_arr):
     return avg_polarity
 
 
-def get_subjectivity():
+def get_subjectivity(arr_of_tweets):
     # return list of subjectivity scores
+    sub_list = []
 
 
 def get_avg_subjectivity(subjectivity_arr):
