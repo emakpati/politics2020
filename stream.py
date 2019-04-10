@@ -1,41 +1,41 @@
-# Requires api from setup.py #
-# Stream limited number of tweets, filter them (language,location, ect) #
-# Create list and check that tweets wont break #
-# Passes limited list of filtered tweets to sentiment.py #
+# Stream limited number of tweets, filter them (language,location, etc) #
+# Passes filtered tweets to sentiment.py #
 
-import setup, topics
+import setup
+import csv
+import json
 import tweepy
 from tweepy import StreamListener
 
 
 class Streamer(StreamListener):
-
     def __init__(self):
         super().__init__()
         self.counter = 0
-        self.limit = 100
+        self.limit = 10
+        self.statuses = []
 
     def on_status(self, status):
-        if self.counter <= self.limit:
-            self.counter += 1
-            print(status.text)
-            return status.text
-        elif self.counter > self.limit:
-            print("***Limit of " + str(self.limit) + " met 😀.***")
+
+        if status.retweeted or "RT @" in status.text or status.lang != "en":  # May be an issue
+            return
+        if len(self.statuses) < self.limit:
+            self.statuses.append(status)
+            print(len(self.statuses))
+        if len(self.statuses) == self.limit:
+            with open("/Users/Ekene/Desktop/Yang_Tweets.csv", "w") as file:
+                writer = csv.writer(file)
+                for status in self.statuses:
+                    writer.writerow([status.user.screen_name, status.text, status.created_at, status.user.location,
+                                     status.id_str])
+            print(self.statuses)
+            print("*** Limit of " + str(self.limit) + " met ***")
+            return False
+        if len(self.statuses) > self.limit:
             streaming.disconnect()
 
 
-n = 500
-
 streaming = tweepy.Stream(auth=setup.api.auth, listener=Streamer())
-tweet_data = streaming.filter(track=["Bernie"])
 
-
-
-
-
-
-
-
-
+stream_data = streaming.filter(track=["Trump"])
 
